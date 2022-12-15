@@ -12,6 +12,7 @@ public class LoginTest {
     private WebDriver driver;
     @Before
     public void initDriver(){
+
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -34,6 +35,7 @@ public class LoginTest {
     }
     @Test
     public void loginInvalidEmail(){
+
         driver.findElement(By.cssSelector(".skip-account .label")).click();
         driver.findElement(By.cssSelector("[title='Log In']")).click();
         driver.findElement(By.id("email")).sendKeys("cosmin@org");
@@ -42,12 +44,13 @@ public class LoginTest {
         String actualBorderValue = driver.findElement(By.cssSelector("li .input-box #email")).getCssValue("border-color");
         System.out.println(actualBorderValue);
         String expectedBorderValue = "rgb(223, 40, 10)";
+
         Assert.assertEquals( expectedBorderValue,actualBorderValue);
 
         WebElement ErrorMsg = driver.findElement(By.id("advice-validate-email-email"));
-
         String expectedErrorMsg = "Please enter a valid email address. For example johndoe@domain.com.";
         String actualErrorMsg = ErrorMsg.getText();
+
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
     }
