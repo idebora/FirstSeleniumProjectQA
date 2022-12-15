@@ -52,8 +52,8 @@ public class LoginTest {
 
     }
 
-//    @After
-//    public void quit(){
-//        driver.close();
-//    }
+    @After
+    public void quit(){
+        driver.close();
+    }
 }
