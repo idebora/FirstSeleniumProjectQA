@@ -10,14 +10,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginTest {
     private WebDriver driver;
+
     @Before
-    public void initDriver(){
+    public void initDriver() {
 
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("http://testfasttrackit.info/selenium-test/");
     }
+
     @Test
     public void loginWithValidData() {
 
@@ -33,8 +35,9 @@ public class LoginTest {
 
         Assert.assertEquals(actualText, expectedText);
     }
+
     @Test
-    public void loginInvalidEmail(){
+    public void loginInvalidEmail() {
 
         driver.findElement(By.cssSelector(".skip-account .label")).click();
         driver.findElement(By.cssSelector("[title='Log In']")).click();
@@ -45,7 +48,7 @@ public class LoginTest {
         System.out.println(actualBorderValue);
         String expectedBorderValue = "rgb(223, 40, 10)";
 
-        Assert.assertEquals( expectedBorderValue,actualBorderValue);
+        Assert.assertEquals(expectedBorderValue, actualBorderValue);
 
         WebElement ErrorMsg = driver.findElement(By.id("advice-validate-email-email"));
         String expectedErrorMsg = "Please enter a valid email address. For example johndoe@domain.com.";
@@ -54,8 +57,9 @@ public class LoginTest {
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
     }
+
     @Test
-    public void loginInvalidPassword(){
+    public void loginInvalidPassword() {
 
         driver.findElement(By.cssSelector(".skip-account .label")).click();
         driver.findElement(By.cssSelector("[title='Log In']")).click();
@@ -71,8 +75,9 @@ public class LoginTest {
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
     }
+
     @Test
-    public void tryLoginWithShortPassword(){
+    public void tryLoginWithShortPassword() {
 
         driver.findElement(By.cssSelector(".skip-account .label")).click();
         driver.findElement(By.cssSelector("[title='Log In']")).click();
@@ -86,6 +91,27 @@ public class LoginTest {
         String expectedErrorMsg = "Please enter 6 or more characters without leading or trailing spaces.";
 
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
+
+    }
+
+    @Test
+    public void logOut() {
+
+        driver.findElement(By.cssSelector(".skip-account .label")).click();
+        driver.findElement(By.cssSelector("[title='Log In']")).click();
+        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
+        driver.findElement(By.id("pass")).sendKeys("123456");
+        driver.findElement(By.id("send2")).click();
+        driver.findElement(By.cssSelector(".skip-account .label")).click();
+        driver.findElement(By.cssSelector(".last [title='Log Out']")).click();
+        driver.findElement(By.cssSelector(".skip-account .label")).click();
+
+        WebElement loginChoose = driver.findElement(By.cssSelector("[title='Log In']"));
+
+        String actualText = loginChoose.getText();
+        String expectedText = "Log In";
+
+        Assert.assertEquals(actualText, expectedText);
 
     }
     @After
