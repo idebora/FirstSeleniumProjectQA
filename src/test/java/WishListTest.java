@@ -62,9 +62,6 @@ public class WishListTest {
         String actualText = addMsg.getText();
 
         Assert.assertEquals(actualText, expectedText);
-
-
-
     }
     @After
     public void quit(){

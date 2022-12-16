@@ -54,7 +54,40 @@ public class LoginTest {
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
     }
+    @Test
+    public void loginInvalidPassword(){
 
+        driver.findElement(By.cssSelector(".skip-account .label")).click();
+        driver.findElement(By.cssSelector("[title='Log In']")).click();
+        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
+        driver.findElement(By.id("pass")).sendKeys("123456789");
+        driver.findElement(By.id("send2")).click();
+
+        WebElement ErrorMsg = driver.findElement(By.cssSelector(".error-msg span"));
+
+        String actualErrorMsg = ErrorMsg.getText();
+        String expectedErrorMsg = "Invalid login or password.";
+
+        Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
+
+    }
+    @Test
+    public void tryLoginWithShortPassword(){
+
+        driver.findElement(By.cssSelector(".skip-account .label")).click();
+        driver.findElement(By.cssSelector("[title='Log In']")).click();
+        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
+        driver.findElement(By.id("pass")).sendKeys("12");
+        driver.findElement(By.id("send2")).click();
+
+        WebElement ErrorMsg = driver.findElement(By.id("advice-validate-password-pass"));
+
+        String actualErrorMsg = ErrorMsg.getText();
+        String expectedErrorMsg = "Please enter 6 or more characters without leading or trailing spaces.";
+
+        Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
+
+    }
     @After
     public void quit(){
         driver.close();
