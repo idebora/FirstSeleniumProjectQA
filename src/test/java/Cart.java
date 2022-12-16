@@ -38,10 +38,8 @@ public class Cart {
         Assert.assertEquals(actualText, expectedText);
     }
 
-
-
-
-
-
-
+    @After
+    public void quit(){
+        driver.close();
+    }
 }
