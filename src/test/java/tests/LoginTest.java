@@ -1,3 +1,5 @@
+package tests;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,15 +9,25 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.AccountPage;
+import pages.HomePage;
+import pages.LoginPage;
+
 
 public class LoginTest {
     private WebDriver driver;
+    private HomePage homePage;
+    private LoginPage loginPage;
+    private AccountPage accountPage;
 
     @Before
     public void initDriver() {
 
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
+        homePage = new HomePage(driver);
+        loginPage = new LoginPage(driver);
+        accountPage = new AccountPage(driver);
         driver.manage().window().maximize();
         driver.get("http://testfasttrackit.info/selenium-test/");
     }
@@ -23,26 +35,30 @@ public class LoginTest {
     @Test
     public void loginWithValidData() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("123456");
-        driver.findElement(By.id("send2")).click();
-        WebElement welcomeTextElement = driver.findElement(By.cssSelector("p.hello"));
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
+        Assert.assertEquals("Hello, Cosmin Fast!", accountPage.getWelcomeText());
+
 
         String expectedText = "Hello, Cosmin Fast!";
-        String actualText = welcomeTextElement.getText();
-
-        Assert.assertEquals(actualText, expectedText);
+        String actualText = accountPage.getWelcomeText();
+        if (actualText.equals(expectedText)) {
+            System.out.println("S-a logat cu success!");
+        } else
+            System.err.println("Nu s-a logat. ");
     }
 
     @Test
     public void loginInvalidEmail() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@org");
-        driver.findElement(By.id("email")).sendKeys(Keys.ENTER);
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
 
         String actualBorderValue = driver.findElement(By.cssSelector("li .input-box #email")).getCssValue("border-color");
         System.out.println(actualBorderValue);
@@ -61,11 +77,11 @@ public class LoginTest {
     @Test
     public void loginInvalidPassword() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("123456789");
-        driver.findElement(By.id("send2")).click();
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456999j");
+        loginPage.clickLoginButton();
 
         WebElement ErrorMsg = driver.findElement(By.cssSelector(".error-msg span"));
 
@@ -79,11 +95,11 @@ public class LoginTest {
     @Test
     public void tryLoginWithShortPassword() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("12");
-        driver.findElement(By.id("send2")).click();
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("12");
+        loginPage.clickLoginButton();
 
         WebElement ErrorMsg = driver.findElement(By.id("advice-validate-password-pass"));
 
@@ -97,14 +113,14 @@ public class LoginTest {
     @Test
     public void logOut() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("123456");
-        driver.findElement(By.id("send2")).click();
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector(".last [title='Log Out']")).click();
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
+        homePage.clickAccountButton();
+        homePage.clickLogoutButton();
+        homePage.clickAccountButton();
 
         WebElement loginChoose = driver.findElement(By.cssSelector("[title='Log In']"));
 
@@ -116,6 +132,7 @@ public class LoginTest {
     }
     @After
     public void quit(){
+
         driver.close();
     }
 }

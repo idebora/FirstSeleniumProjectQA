@@ -1,3 +1,5 @@
+package tests;
+
 import net.bytebuddy.asm.Advice;
 import org.junit.After;
 import org.junit.Assert;

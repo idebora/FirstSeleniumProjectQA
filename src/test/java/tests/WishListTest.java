@@ -1,3 +1,5 @@
+package tests;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,7 +57,7 @@ public class WishListTest {
         driver.findElement(By.cssSelector("li.nav-5 a.level0.has-children")).click();
         driver.findElement(By.id("product-collection-image-403")).click();
         driver.findElement(By.cssSelector(".add-to-links a.link-wishlist")).click();
-        driver.findElement(By.cssSelector(".cart-cell [title='Add to Cart']")).click();
+        driver.findElement(By.cssSelector(".cart-cell [title='Add to tests.Cart']")).click();
 
         WebElement addMsg = driver.findElement(By.cssSelector(".notice-msg span"));
         String expectedText ="Please specify the product's option(s).";

@@ -1,3 +1,5 @@
+package tests;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,7 +31,7 @@ public class Cart {
         driver.findElement(By.id("product-collection-image-403")).click();
         driver.findElement(By.id("option27")).click();
         driver.findElement(By.id("option81")).click();
-        driver.findElement(By.cssSelector(".add-to-cart-buttons [title='Add to Cart']")).click();
+        driver.findElement(By.cssSelector(".add-to-cart-buttons [title='Add to tests.Cart']")).click();
 
         WebElement successMsg = driver.findElement(By.cssSelector(".cart .success-msg span"));
         String expectedText = "Slim fit Dobby Oxford Shirt was added to your shopping cart.";
