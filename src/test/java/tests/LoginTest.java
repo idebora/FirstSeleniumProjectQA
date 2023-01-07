@@ -11,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import pages.AccountPage;
 import pages.HomePage;
 import pages.LoginPage;
-//import pages.LazyErrorLoginPage;
+
 
 
 public class LoginTest {
@@ -120,8 +120,8 @@ public class LoginTest {
         Assert.assertEquals(actualText, expectedText);
 
     }
-    @After
-    public void quit(){
-        driver.close();
-    }
+//    @After
+//    public void quit(){
+//        driver.close();
+//    }
 }

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.w3c.dom.html.HTMLInputElement;
 
 public class HomePage {
 
@@ -26,6 +27,9 @@ public class HomePage {
 
     @FindBy(css="[title='Register']")
     private WebElement registerLink;
+
+    @FindBy(css = "#header-account ul :nth-child(2)")
+    private  WebElement myWishListButton;
 
     public void clickAccountButton() {
         accountButton.click();
@@ -49,5 +53,9 @@ public class HomePage {
 
     public void clickRegisterLink() {
         registerLink.click();
+    }
+
+    public void clickMyWishListButton() {
+        myWishListButton.click();
     }
 }

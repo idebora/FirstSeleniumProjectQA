@@ -8,14 +8,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.AccountPage;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.WishListPage;
 
 public class WishListTest {
 
     private WebDriver driver;
+    private HomePage homePage;
+    private LoginPage loginPage;
+    private WishListPage wishListPage;
     @Before
    public void initDriver(){
        System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
        driver = new ChromeDriver();
+        homePage = new HomePage(driver);
+        loginPage = new LoginPage(driver);
+        wishListPage = new WishListPage(driver);
        driver.manage().window().maximize();
        driver.get("http://testfasttrackit.info/selenium-test/");
     }
@@ -23,45 +33,54 @@ public class WishListTest {
     @Test
     public void addToWishlistTest(){
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("123456");
-        driver.findElement(By.id("send2")).click();
-        driver.findElement(By.cssSelector("li.nav-5 a.level0.has-children")).click();
-        driver.findElement(By.id("product-collection-image-403")).click();
-        driver.findElement(By.cssSelector(".add-to-links a.link-wishlist")).click();
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
+        wishListPage.clickSaleButton();
+        wishListPage.clickFirstProductButton();
+        wishListPage.clickaddWishListButton();
+
 
         WebElement successMsg = driver.findElement(By.cssSelector(".my-wishlist .success-msg span"));
         String expectedText = "Slim fit Dobby Oxford Shirt has been added to your wishlist. Click here to continue shopping.";
-        String actualText = successMsg.getText();
+        String actualText = wishListPage.getSuccessfulAddToWishListMsg();
 
         Assert.assertEquals(actualText, expectedText);
     }
     @Test
     public void removeProductFromWishList(){
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("#header-account ul :nth-child(2)")).click();
-        driver.findElement(By.cssSelector(".customer-wishlist-item-remove a")).click();
-
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
+        wishListPage.clickSaleButton();
+        wishListPage.clickFirstProductButton();
+        wishListPage.clickaddWishListButton();
+        homePage.clickAccountButton();
+        homePage.clickMyWishListButton();
+        wishListPage.clickRemoveWishListButton();
     }
     @Test
     public void addToCartFromWishList(){
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Log In']")).click();
-        driver.findElement(By.id("email")).sendKeys("cosmin@fasttrackit.org");
-        driver.findElement(By.id("pass")).sendKeys("123456");
-        driver.findElement(By.id("send2")).click();
-        driver.findElement(By.cssSelector("li.nav-5 a.level0.has-children")).click();
-        driver.findElement(By.id("product-collection-image-403")).click();
-        driver.findElement(By.cssSelector(".add-to-links a.link-wishlist")).click();
-        driver.findElement(By.cssSelector(".cart-cell [title='Add to tests.Cart']")).click();
+        homePage.clickAccountButton();
+        homePage.clickLoginLink();
+        loginPage.setEmailField("cosmin@fasttrackit.org");
+        loginPage.setPasswordField("123456");
+        loginPage.clickLoginButton();
+        wishListPage.clickSaleButton();
+        wishListPage.clickFirstProductButton();
+        wishListPage.clickaddWishListButton();
+        wishListPage.clickaddToCartButton();
 
-        WebElement addMsg = driver.findElement(By.cssSelector(".notice-msg span"));
+
+
         String expectedText ="Please specify the product's option(s).";
-        String actualText = addMsg.getText();
+        String actualText = wishListPage.getNoticeAddMsg();
 
         Assert.assertEquals(actualText, expectedText);
     }

@@ -8,16 +8,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.CartPage;
+import pages.HomePage;
+import pages.WishListPage;
 
 public class CartTest {
 
     private WebDriver driver;
+    private WishListPage wishListPage;
 
+    private HomePage homePage;
+
+    private CartPage cartPage;
     @Before
     public void initDriver() {
 
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
+        wishListPage = new WishListPage(driver);
+        cartPage = new CartPage(driver);
         driver.manage().window().maximize();
         driver.get("http://testfasttrackit.info/selenium-test/");
     }
@@ -26,21 +35,20 @@ public class CartTest {
     @Test
     public void addProductToCart(){
 
-        driver.findElement(By.cssSelector("li.nav-5 a.level0.has-children")).click();
-        driver.findElement(By.id("product-collection-image-403")).click();
-        driver.findElement(By.id("option27")).click();
-        driver.findElement(By.id("option81")).click();
-        driver.findElement(By.cssSelector(".add-to-cart-buttons [title='Add to tests.Cart']")).click();
+        wishListPage.clickSaleButton();
+        wishListPage.clickFirstProductButton();
+        cartPage.clickColorProductButton();
+        cartPage.clickSizeProductButton();
+        cartPage.clickAddToCartButton();
 
-        WebElement successMsg = driver.findElement(By.cssSelector(".cart .success-msg span"));
         String expectedText = "Slim fit Dobby Oxford Shirt was added to your shopping cart.";
-        String actualText = successMsg.getText();
-
+        String actualText = cartPage.getSuccessfulAddedToCartMsg();
         Assert.assertEquals(actualText, expectedText);
     }
 
-    @After
-    public void quit(){
-        driver.close();
-    }
+//    @After
+//    public void quit(){
+//
+//        driver.close();
+//    }
 }

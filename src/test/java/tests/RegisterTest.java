@@ -75,30 +75,30 @@ public class RegisterTest {
     @Test
     public void registerWithInvalidEmail(){
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Register']")).click();
-        driver.findElement(By.id("firstname")).sendKeys("Elisa");
-        driver.findElement(By.id("middlename")).sendKeys("Lizzy");
-        driver.findElement(By.id("lastname")).sendKeys("Duma");
-        driver.findElement(By.id("email_address")).sendKeys("xicuqu@br");
-        driver.findElement(By.id("email_address")).sendKeys(Keys.ENTER);
+        homePage.clickAccountButton();
+        homePage.clickRegisterLink();
+        registerPage.setFirstnameField("Elisa");
+        registerPage.setMiddlenameField("lizzy");
+        registerPage.setLastnameField("Duma");
+        registerPage.setEmailField("kegeti6394@denta");
 
-        String actualBorderValue = driver.findElement(By.cssSelector("div.input-box #email_address")).getCssValue("border-color");
+
+
+        String actualBorderValue = registerPage.getEmailFieldBorder();
         System.out.println(actualBorderValue);
         String expectedBorderValue = "rgb(223, 40, 10)";
 
-        Assert.assertEquals( expectedBorderValue,actualBorderValue);
+        Assert.assertEquals(expectedBorderValue, actualBorderValue);
 
-        WebElement ErrorMsg = driver.findElement(By.cssSelector("div#advice-validate-email-email_address.validation-advice"));
         String expectedErrorMsg = "Please enter a valid email address. For example johndoe@domain.com.";
-        String actualErrorMsg = ErrorMsg.getText();
+        String actualErrorMsg = registerPage.getErrorEmailMsg();
 
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
     }
 
-//    @After
-//    public void quit(){
-//
-//        driver.close();
-//    }
+    @After
+    public void quit(){
+
+        driver.close();
+    }
 }

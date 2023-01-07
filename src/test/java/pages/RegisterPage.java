@@ -1,5 +1,6 @@
 package pages;
 
+import net.bytebuddy.asm.Advice;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -46,6 +47,10 @@ public class RegisterPage {
 
     @FindBy(css = "li.error-msg span")
     private WebElement errorRegisterMsg;
+
+    @FindBy(css = "div#advice-validate-email-email_address.validation-advice")
+    private WebElement errorEmailMsg;
+
     public void setFirstnameField(String s) {
         firstnameField.sendKeys(s);
     }
@@ -59,7 +64,8 @@ public class RegisterPage {
     }
 
     public void setEmailField(String s) {
-        emailField.sendKeys(s);
+        emailField.sendKeys(s + Keys.ENTER);
+
     }
     public void setPasswordField(String s) {
         passwordField.sendKeys(s);
@@ -82,5 +88,12 @@ public class RegisterPage {
 
     public String getErrorRegisterMsg(){
         return errorRegisterMsg.getText();
+    }
+    public String getEmailFieldBorder(){
+        return emailField.getCssValue("border-color");
+    }
+
+    public String getErrorEmailMsg(){
+        return errorEmailMsg.getText();
     }
 }
