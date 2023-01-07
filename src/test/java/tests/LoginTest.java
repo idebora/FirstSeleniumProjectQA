@@ -5,13 +5,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.AccountPage;
 import pages.HomePage;
 import pages.LoginPage;
+//import pages.LazyErrorLoginPage;
 
 
 public class LoginTest {
@@ -40,15 +40,14 @@ public class LoginTest {
         loginPage.setEmailField("cosmin@fasttrackit.org");
         loginPage.setPasswordField("123456");
         loginPage.clickLoginButton();
-        Assert.assertEquals("Hello, Cosmin Fast!", accountPage.getWelcomeText());
-
 
         String expectedText = "Hello, Cosmin Fast!";
         String actualText = accountPage.getWelcomeText();
-        if (actualText.equals(expectedText)) {
-            System.out.println("S-a logat cu success!");
-        } else
-            System.err.println("Nu s-a logat. ");
+        Assert.assertEquals(actualText, expectedText);
+        //        if (actualText.equals(expectedText)) {
+        //            System.out.println("S-a logat cu success!");
+        //        } else
+        //            System.err.println("Nu s-a logat. ");
     }
 
     @Test
@@ -60,15 +59,13 @@ public class LoginTest {
         loginPage.setPasswordField("123456");
         loginPage.clickLoginButton();
 
-        String actualBorderValue = driver.findElement(By.cssSelector("li .input-box #email")).getCssValue("border-color");
-        System.out.println(actualBorderValue);
+        String actualBorderValue = loginPage.getEmailFieldBorder();
         String expectedBorderValue = "rgb(223, 40, 10)";
 
         Assert.assertEquals(expectedBorderValue, actualBorderValue);
 
-        WebElement ErrorMsg = driver.findElement(By.id("advice-validate-email-email"));
         String expectedErrorMsg = "Please enter a valid email address. For example johndoe@domain.com.";
-        String actualErrorMsg = ErrorMsg.getText();
+        String actualErrorMsg = loginPage.getValidEmailMsg();
 
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
@@ -83,11 +80,8 @@ public class LoginTest {
         loginPage.setPasswordField("123456999j");
         loginPage.clickLoginButton();
 
-        WebElement ErrorMsg = driver.findElement(By.cssSelector(".error-msg span"));
-
-        String actualErrorMsg = ErrorMsg.getText();
+        String actualErrorMsg = loginPage.getInvalidMsg();
         String expectedErrorMsg = "Invalid login or password.";
-
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
 
     }
@@ -101,9 +95,7 @@ public class LoginTest {
         loginPage.setPasswordField("12");
         loginPage.clickLoginButton();
 
-        WebElement ErrorMsg = driver.findElement(By.id("advice-validate-password-pass"));
-
-        String actualErrorMsg = ErrorMsg.getText();
+        String actualErrorMsg = loginPage.getShortPassMsg();
         String expectedErrorMsg = "Please enter 6 or more characters without leading or trailing spaces.";
 
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
@@ -122,9 +114,7 @@ public class LoginTest {
         homePage.clickLogoutButton();
         homePage.clickAccountButton();
 
-        WebElement loginChoose = driver.findElement(By.cssSelector("[title='Log In']"));
-
-        String actualText = loginChoose.getText();
+        String actualText = homePage.getLoginText();
         String expectedText = "Log In";
 
         Assert.assertEquals(actualText, expectedText);
@@ -132,7 +122,6 @@ public class LoginTest {
     }
     @After
     public void quit(){
-
         driver.close();
     }
 }

@@ -10,56 +10,64 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.HomePage;
+import pages.RegisterPage;
 
 
 public class RegisterTest {
 
     private WebDriver driver;
+
+    private HomePage homePage;
+
+    private RegisterPage registerPage;
     @Before
     public void initDriver(){
 
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
         driver = new ChromeDriver();
+        homePage = new HomePage(driver);
+        registerPage = new RegisterPage(driver);
         driver.manage().window().maximize();
         driver.get("http://testfasttrackit.info/selenium-test/");
     }
     @Test
     public void registerWithValidData() {
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Register']")).click();
-        driver.findElement(By.id("firstname")).sendKeys("Elisa");
-        driver.findElement(By.id("middlename")).sendKeys("Lizzy");
-        driver.findElement(By.id("lastname")).sendKeys("Duma");
-        driver.findElement(By.id("email_address")).sendKeys("xicuqu@brand-app.biz");
-        driver.findElement(By.id("password")).sendKeys("123456");
-        driver.findElement(By.id("confirmation")).sendKeys("123456");
-        driver.findElement(By.id("is_subscribed")).click();
-        driver.findElement(By.cssSelector("[title='Register'] span span")).click();
+        homePage.clickAccountButton();
+        homePage.clickRegisterLink();
+        registerPage.setFirstnameField("Elisa");
+        registerPage.setMiddlenameField("lizzy");
+        registerPage.setLastnameField("Duma");
+        registerPage.setEmailField("kegeti6394@dentaltz.com");
+        registerPage.setPasswordField("123456");
+        registerPage.setConfirmationField("123456");
+        registerPage.clickSubscribeButton();
+        registerPage.clickRegisterButton();
 
-        WebElement successMsg = driver.findElement(By.cssSelector("li.success-msg span"));
         String expectedText = "Thank you for registering with Madison Island.";
-        String actualText = successMsg.getText();
+        String actualText = registerPage.getSuccessfulRegisterMsg();
 
         Assert.assertEquals(actualText, expectedText);
     }
     @Test
     public void tryToRegisterWithTheSameEmail(){
 
-        driver.findElement(By.cssSelector(".skip-account .label")).click();
-        driver.findElement(By.cssSelector("[title='Register']")).click();
-        driver.findElement(By.id("firstname")).sendKeys("Elisa");
-        driver.findElement(By.id("middlename")).sendKeys("Lizzy");
-        driver.findElement(By.id("lastname")).sendKeys("Duma");
-        driver.findElement(By.id("email_address")).sendKeys("xicuqu@brand-app.biz");
-        driver.findElement(By.id("password")).sendKeys("123456");
-        driver.findElement(By.id("confirmation")).sendKeys("123456");
-        driver.findElement(By.id("is_subscribed")).click();
-        driver.findElement(By.cssSelector("[title='Register'] span span")).click();
+        homePage.clickAccountButton();
+        homePage.clickRegisterLink();
+        registerPage.setFirstnameField("Elisa");
+        registerPage.setMiddlenameField("lizzy");
+        registerPage.setLastnameField("Duma");
+        registerPage.setEmailField("kegeti6394@dentaltz.com");
+        registerPage.setPasswordField("123456");
+        registerPage.setConfirmationField("123456");
+        registerPage.clickSubscribeButton();
+        registerPage.clickRegisterButton();
 
-        WebElement successMsj = driver.findElement(By.cssSelector("li.error-msg span"));
+
+//        WebElement successMsj = driver.findElement(By.cssSelector("li.error-msg span"));
         String expectedText = "There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.";
-        String actualText = successMsj.getText();
+        String actualText = registerPage.getErrorRegisterMsg();
 
         Assert.assertEquals(actualText, expectedText);
 
@@ -88,8 +96,9 @@ public class RegisterTest {
         Assert.assertEquals(actualErrorMsg, expectedErrorMsg);
     }
 
-    @After
-    public void quit(){
-        driver.close();
-    }
+//    @After
+//    public void quit(){
+//
+//        driver.close();
+//    }
 }

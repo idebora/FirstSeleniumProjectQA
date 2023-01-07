@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Checkout {
+public class CheckoutTest {
 
     private WebDriver driver;
     @Before

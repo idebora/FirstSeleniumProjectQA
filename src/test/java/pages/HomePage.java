@@ -24,6 +24,9 @@ public class HomePage {
     @FindBy(css = "[title='Log Out']")
     private WebElement logoutButton;
 
+    @FindBy(css="[title='Register']")
+    private WebElement registerLink;
+
     public void clickAccountButton() {
         accountButton.click();
     }
@@ -38,5 +41,13 @@ public class HomePage {
     public void clickLogoutButton() {
         logoutButton.click();
 
+    }
+
+    public String getLoginText(){
+        return loginLink.getText();
+    }
+
+    public void clickRegisterLink() {
+        registerLink.click();
     }
 }
